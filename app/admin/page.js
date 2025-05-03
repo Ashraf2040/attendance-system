@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 export default function AdminPanel() {
   const [teachers, setTeachers] = useState([]);
   const [attendance, setAttendance] = useState([]);
+  const [leaveRequests, setLeaveRequests] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
   const [adjustedTimes, setAdjustedTimes] = useState({});
   const [maxAttendanceTime, setMaxAttendanceTime] = useState("08:00");
@@ -21,6 +22,12 @@ export default function AdminPanel() {
       fetch("/api/attendance")
         .then((res) => res.json())
         .then((data) => setAttendance(data));
+      fetch("/api/leave")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Fetched leave requests:", data); // Debug the fetched data
+          setLeaveRequests(data);
+        });
       fetch("/api/settings")
         .then((res) => res.json())
         .then((data) => setMaxAttendanceTime(data.max_attendance_time || "08:00"));
@@ -93,12 +100,43 @@ export default function AdminPanel() {
         alert(data.message);
         setTeachers([]);
         setAttendance([]);
+        setLeaveRequests([]);
       } else {
         alert(data.error || "فشل إعادة التعيين");
       }
     } catch (error) {
       console.error("Error resetting data:", error);
       alert("خطأ أثناء إعادة التعيين");
+    }
+  };
+
+  const handleLeaveDecision = async (requestId, status) => {
+    if (!requestId) {
+      console.error("Request ID is null or undefined");
+      alert("خطأ: معرف الطلب غير صالح");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/leave/${requestId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) {
+        setLeaveRequests((prev) =>
+          prev.map((req) =>
+            req.id === requestId ? { ...req, status } : req
+          )
+        );
+      } else {
+        const errorData = await res.json();
+        console.error("Failed to update leave request:", errorData);
+        alert(errorData.error || "فشل تحديث حالة طلب الإجازة");
+      }
+    } catch (error) {
+      console.error("Error updating leave request:", error);
+      alert("خطأ أثناء تحديث حالة طلب الإجازة");
     }
   };
 
@@ -125,6 +163,7 @@ export default function AdminPanel() {
   };
 
   const { attended, absent, recordsOnDate } = getAttendanceStatus();
+  const pendingLeaveRequests = leaveRequests.filter((req) => req.status === "pending");
 
   const handlePrint = () => {
     const printContent = `
@@ -197,7 +236,89 @@ export default function AdminPanel() {
   return (
     <div className="min-h-screen bg-gray-900 p-4 text-white text-right">
       <h1 className="text-2xl sm:text-4xl font-bold text-teal-400 mb-8">لوحة الإدارة</h1>
-      
+
+      {/* Notification Section for Pending Leave Requests */}
+      {pendingLeaveRequests.length > 0 && (
+        <div className="bg-red-800 p-4 rounded-lg mb-8">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 flex items-center">
+            <span className="ml-2">🔔</span> تنبيه: طلبات إجازة جديدة
+          </h2>
+          <div className="space-y-3">
+            {pendingLeaveRequests.map((request) => (
+              <div key={request.id} className="bg-gray-700 p-3 rounded-lg flex justify-between items-center">
+                <div>
+                  <p className="text-sm sm:text-base">رقم الإقامة: {request.iqama_no}</p>
+                  <p className="text-sm sm:text-base">التاريخ: {new Date(request.date).toLocaleDateString()}</p>
+                  <p className="text-sm sm:text-base">السبب: {request.reason}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleLeaveDecision(request.id, "accepted")}
+                    className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition"
+                  >
+                    قبول
+                  </button>
+                  <button
+                    onClick={() => handleLeaveDecision(request.id, "refused")}
+                    className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition"
+                  >
+                    رفض
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Leave Requests Table */}
+      <div className="bg-gray-800 p-4 sm:p-6 rounded-lg mb-8">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4">طلبات الإجازة</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm sm:text-base">
+            <thead>
+              <tr className="bg-gray-700">
+                <th className="p-2 sm:p-3">رقم الإقامة</th>
+                <th className="p-2 sm:p-3">التاريخ</th>
+                <th className="p-2 sm:p-3">السبب</th>
+                <th className="p-2 sm:p-3">الحالة</th>
+                <th className="p-2 sm:p-3">الإجراء</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaveRequests.map((request) => (
+                <tr key={request.id} className="border-b border-gray-600">
+                  <td className="p-2 sm:p-3">{request.iqama_no}</td>
+                  <td className="p-2 sm:p-3">{new Date(request.date).toLocaleDateString()}</td>
+                  <td className="p-2 sm:p-3">{request.reason}</td>
+                  <td className="p-2 sm:p-3">
+                    {request.status === "pending" ? "قيد الانتظار" : request.status === "accepted" ? "مقبول" : "مرفوض"}
+                  </td>
+                  <td className="p-2 sm:p-3">
+                    {request.status === "pending" && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleLeaveDecision(request.id, "accepted")}
+                          className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition"
+                        >
+                          قبول
+                        </button>
+                        <button
+                          onClick={() => handleLeaveDecision(request.id, "refused")}
+                          className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition"
+                        >
+                          رفض
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Reset All Data Button */}
       <div className="bg-gray-800 p-4 sm:p-6 rounded-lg mb-8">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4">إعادة تعيين البيانات</h2>

@@ -35,3 +35,23 @@ body {
   font-size: 2rem;
   font-weight: bold;
 }
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring__text {
+  fill: white;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+@media (max-width: 640px) {
+  .progress-ring__text {
+    font-size: 1rem;
+  }
+  .progress-ring__text:nth-child(3) {
+    font-size: 0.7rem;
+  }
+}
