@@ -22,7 +22,19 @@ export async function POST(request) {
     if (!data || !(await bcrypt.compare(password, data.password))) {
       return NextResponse.json({ error: "بيانات تسجيل الدخول غير صحيحة" }, { status: 401 });
     }
-    return NextResponse.json({ success: true, role: data.role }, { status: 200 });
+
+    // Set teacherId cookie with debugging
+    console.log("Setting teacherId cookie for:", iqamaNo);
+    const response = NextResponse.json({ success: true, role: data.role }, { status: 200 });
+    response.cookies.set("teacherId", iqamaNo, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 86400, // 24 hours
+      sameSite: "lax", // Add sameSite for security
+    });
+    console.log("Cookie headers:", response.headers.getSetCookie());
+
+    return response;
   } catch (error) {
     console.error("خطأ في المصادقة:", error);
     return NextResponse.json({ error: "خطأ داخلي في الخادم" }, { status: 500 });

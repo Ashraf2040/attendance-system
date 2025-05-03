@@ -22,10 +22,13 @@ export default function Login() {
         body: JSON.stringify({ iqamaNo, password }),
       });
       const data = await res.json();
+      console.log("Login response:", data); // Debug the response
       if (res.ok) {
         localStorage.setItem("iqamaNo", iqamaNo);
         localStorage.setItem("role", data.role);
-        router.push(data.role === "admin" ? "/admin" : "/dashboard");
+        const redirectPath = data.role === "admin" ? "/admin" : "/dashboard";
+        console.log("Navigating to:", redirectPath); // Debug navigation
+        router.push(redirectPath);
       } else {
         setError(data.error || "فشل تسجيل الدخول");
       }
