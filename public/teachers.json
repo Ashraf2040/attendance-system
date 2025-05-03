@@ -1,0 +1,42 @@
+[
+  {
+    "iqamaNo": "T004",
+    "name": "Ahmed Ahmed",
+    "password": "$2a$10$ro5.ddsHRz3icDFc5KFuOuQPLV6w9ujRUXqA/.Q6efP2TDCCrGloi",
+    "role": "teacher",
+    "authMethod": "face",
+    "authData": "ZGF0YTppbWFnZS9qcGVn"
+  },
+  {
+    "iqamaNo": "T002",
+    "name": "جين سميث",
+    "password": "$2a$10$z1vX8Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x5Y5x",
+    "role": "admin",
+    "authMethod": "fingerprint",
+    "authData": "mock-fingerprint-id-456"
+  },
+  {
+    "iqamaNo": "2457812895",
+    "name": "اشرف السيد محمود احمد",
+    "password": "$2a$10$hGe/LriuOduMxokL95bPpelaSv.3gOmFnVOt.MAwnI1hmLUrxtCHm",
+    "role": "teacher",
+    "authMethod": "face",
+    "authData": "ZGF0YTppbWFnZS9qcGVn"
+  },
+  {
+    "iqamaNo": "123456789",
+    "name": "احمد احمد",
+    "password": "$2a$10$rfutpqol1yw5Wb8thqe2mO0Tp0TiMMILXg0koNRMGBJRNT92TU.Tq",
+    "role": "admin",
+    "authMethod": "face",
+    "authData": "ZGF0YTppbWFnZS9qcGVn"
+  },
+  {
+    "iqamaNo": "12345678910",
+    "name": "Yousuf Ashraf",
+    "password": "$2a$10$eze8apnZJohXKWI4/eDpY.u5mpJ7IMNRJzvgT1bHlyeQHE1OtajQm",
+    "role": "teacher",
+    "authMethod": "face",
+    "authData": "ZGF0YTppbWFnZS9qcGVn"
+  }
+]

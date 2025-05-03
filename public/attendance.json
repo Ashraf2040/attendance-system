@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "teacherId": "asdfdgs",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:21:12.875Z"
+  },
+  {
+    "id": 2,
+    "teacherId": "asdfdgs",
+    "status": "check-out",
+    "timestamp": "2025-05-01T20:21:18.540Z"
+  },
+  {
+    "id": 3,
+    "teacherId": "ashraf ",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:22:12.124Z"
+  },
+  {
+    "id": 4,
+    "teacherId": "ashraf ",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:22:18.077Z"
+  },
+  {
+    "id": 5,
+    "teacherId": "Ashraf Ahmed ",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:24:05.894Z"
+  },
+  {
+    "id": 6,
+    "teacherId": "Ashraf Ahmed ",
+    "status": "check-out",
+    "timestamp": "2025-05-01T20:24:12.999Z"
+  },
+  {
+    "id": 7,
+    "teacherId": "T003",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:41:04.481Z"
+  },
+  {
+    "id": 8,
+    "teacherId": "T003",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:55:07.692Z"
+  },
+  {
+    "id": 9,
+    "teacherId": "T003",
+    "status": "check-in",
+    "timestamp": "2025-05-01T20:56:40.437Z"
+  },
+  {
+    "id": 10,
+    "teacherId": "T003",
+    "status": "check-out",
+    "timestamp": "2025-05-01T20:56:44.590Z"
+  },
+  {
+    "id": 11,
+    "teacherId": "T004",
+    "status": "check-in",
+    "timestamp": "2025-05-01T21:16:23.427Z"
+  },
+  {
+    "id": 12,
+    "teacherId": "T004",
+    "status": "check-out",
+    "timestamp": "2025-05-01T21:16:34.548Z"
+  },
+  {
+    "id": 13,
+    "teacherId": "T004",
+    "status": "check-in",
+    "timestamp": "2025-05-01T21:19:28.219Z"
+  },
+  {
+    "id": "A014",
+    "iqamaNo": "2457812895",
+    "status": "check-in",
+    "timestamp": "2025-05-01T21:28:58.678Z"
+  },
+  {
+    "id": "A015",
+    "iqamaNo": "12345678910",
+    "status": "check-in",
+    "timestamp": "2025-05-01T21:44:57.333Z"
+  }
+]
